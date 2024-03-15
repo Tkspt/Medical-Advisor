@@ -79,12 +79,12 @@ def home_page(page: ft.Page):
     page.bgcolor="white"
 
     # Création des champs de saisie
-    champ_email = ft.TextField(label="Email", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_mot_de_passe = ft.TextField(label="Mot de passe", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
+    champ_email = ft.TextField(label="Email", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
+    champ_mot_de_passe = ft.TextField(label="Mot de passe", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
 
     # Création des boutons
-    bouton_se_connecter = ft.ElevatedButton(text="Se connecter", bgcolor=vert, color=blanc, on_click=lambda _: se_connecter(page, champ_email.value, champ_mot_de_passe.value))
-    bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=blanc, on_click=lambda _: creer_compte(page))
+    bouton_se_connecter = ft.ElevatedButton(text="Se connecter", bgcolor=vert, color=noir, on_click=lambda _: se_connecter(page, champ_email.value, champ_mot_de_passe.value))
+    bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=noir, on_click=lambda _: creer_compte(page))
 
     # Ajout des champs de saisie et des boutons à la page
     page.add(
