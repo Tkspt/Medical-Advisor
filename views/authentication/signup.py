@@ -9,21 +9,21 @@ def signup_page(page: ft.Page):
     page.bgcolor="white"
 
     # Création des champs de saisie
-    champ_nom = ft.TextField(label="Nom", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_prenom = ft.TextField(label="Prénom", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_email = ft.TextField(label="Email", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_sexe = ft.Dropdown(label="Sexe", width=200, color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir),
+    champ_nom = ft.TextField(label="Nom", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
+    champ_prenom = ft.TextField(label="Prénom", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
+    champ_email = ft.TextField(label="Email", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
+    champ_sexe = ft.Dropdown(label="Sexe", width=200, color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir),
         options=[
             ft.dropdown.Option("Homme"),
             ft.dropdown.Option("Femme"),
             ft.dropdown.Option("Autre"),
         ],
     )
-    champ_mot_de_passe = ft.TextField(label="Mot de passe", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
+    champ_mot_de_passe = ft.TextField(label="Mot de passe", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
 
     # Création des boutons
-    bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=blanc, on_click=lambda _: creer_compte(page))
-    bouton_annuler = ft.ElevatedButton(text="Annuler", bgcolor=vert, color=blanc, on_click=lambda _: annuler(page))
+    bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=noir, on_click=lambda _: creer_compte(page))
+    bouton_annuler = ft.ElevatedButton(text="Annuler", bgcolor=vert, color=noir, on_click=lambda _: annuler(page))
 
     # Ajout des champs de saisie et des boutons à la page
     page.add(
