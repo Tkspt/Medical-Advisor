@@ -69,8 +69,10 @@
 # ft.app(target=home, view=ft.WEB_BROWSER)
 
 import flet as ft
+from flet import *
 
-def home_page(page: ft.Page):
+
+""" def home_page(page: ft.Page):
     # Définition des couleurs
     blanc = ft.colors.WHITE
     vert = ft.colors.GREEN
@@ -124,4 +126,5 @@ def se_connecter(page, email, mot_de_passe):
 
 def creer_compte(page):
     from views.authentication.signup import signup_page
-    signup_page(page)
+    signup_page(page) """
+
