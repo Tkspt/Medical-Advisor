@@ -1,130 +1,87 @@
-# import flet as ft
-
-# def home(page: ft.Page):
-#     # Définition des couleurs
-#     blanc = ft.colors.WHITE
-#     vert = ft.colors.GREEN
-#     noir = ft.colors.BLACK
-#     gris = ft.colors.BLUE_GREY
-#     page.bgcolor="white"
-
-#     # Création des champs de saisie
-#     champ_email = ft.TextField(label="Email", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir))
-#     champ_mot_de_passe = ft.TextField(label="Mot de passe", color=blanc, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
-
-#     # Création des boutons
-#     bouton_se_connecter = ft.ElevatedButton(text="Se connecter", bgcolor=vert, color=blanc, on_click=lambda _: se_connecter(page))
-#     bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=blanc, on_click=lambda _: creer_compte(page))
-
-#     # Ajout des champs de saisie et des boutons à la page
-#     page.add(
-#         ft.Column(
-#             [
-#                 ft.Row(
-#                     [
-#                         ft.Text("Email", color=noir),
-#                         champ_email,
-#                     ],
-#                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-#                 ),
-#                 ft.Row(
-#                     [
-#                         ft.Text("Mot de passe", color=noir),
-#                         champ_mot_de_passe,
-#                     ],
-#                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-#                 ),
-#                 ft.Row(
-#                     [
-#                         bouton_se_connecter,
-#                         bouton_creer_compte,
-#                     ],
-#                     alignment=ft.MainAxisAlignment.CENTER,
-#                 ),
-#             ],
-#             spacing=10,
-#         ),
-#     )
-
-# def se_connecter(page):
-#     page.dialog = ft.AlertDialog(
-#         title=ft.Text("Se connecter"),
-#         content=ft.Text("Vous êtes maintenant connecté(e) !"),
-#         actions=[
-#             ft.ElevatedButton(text="OK", on_click=lambda _: page.dialog.close()),
-#         ],
-#     )
-#     page.dialog.open = True
-
-# def creer_compte(page):
-#     page.dialog = ft.AlertDialog(
-#         title=ft.Text("Créer un compte"),
-#         content=ft.Text("Votre compte a été créé avec succès !"),
-#         actions=[
-#             ft.ElevatedButton(text="OK", on_click=lambda _: page.dialog.close()),
-#         ],
-#     )
-#     page.dialog.open = True
-
-# ft.app(target=home, view=ft.WEB_BROWSER)
-
 import flet as ft
 from flet import *
 
-
-""" def home_page(page: ft.Page):
-    # Définition des couleurs
-    blanc = ft.colors.WHITE
-    vert = ft.colors.GREEN
-    noir = ft.colors.BLACK
-    gris = ft.colors.BLUE_GREY
-    page.bgcolor="white"
-
-    # Création des champs de saisie
-    champ_email = ft.TextField(label="Email", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_mot_de_passe = ft.TextField(label="Mot de passe", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
-
-    # Création des boutons
-    bouton_se_connecter = ft.ElevatedButton(text="Se connecter", bgcolor=vert, color=noir, on_click=lambda _: se_connecter(page, champ_email.value, champ_mot_de_passe.value))
-    bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=noir, on_click=lambda _: creer_compte(page))
-
-    # Ajout des champs de saisie et des boutons à la page
-    page.add(
-        ft.Column(
-            [
-                ft.Row(
-                    [
-                        ft.Text("Email", color=noir),
-                        champ_email,
+def home_page(page: ft.Page):
+    
+    first_page_contents = Container(
+        content=Column(
+            controls=[
+                Row(alignment='spaceBetween',
+                    controls=[
+                        Container(content=Icon(icons.MENU, color=ft.colors.GREEN_500)),
+                        Row(controls=[
+                            Icon(icons.SEARCH, color=ft.colors.GREEN_500),
+                            Icon(icons.NOTIFICATION_ADD_OUTLINED,color=ft.colors.GREEN_500)
+                        ]),
                     ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 ),
-                ft.Row(
-                [
-                        ft.Text("Mot de passe", color=noir),
-                        champ_mot_de_passe,
-                    ],
-                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                Container(height=60),
+
+                ft.SafeArea(
+                    expand=True,
+                    content=ft.Column(
+                        horizontal_alignment="center",
+                        controls=[
+                            ft.Divider(height=20, color="transparent"),
+                            ft.Container(
+                                bgcolor="white10",
+                                width=150,
+                                height=150,
+                                shape=ft.BoxShape("circle"),
+                                image_src="./logos/logo1.png",
+                                image_fit="cover",
+                                shadow=ft.BoxShadow(
+                                    spread_radius=6,
+                                    blur_radius=20,
+                                    color=ft.colors.with_opacity(0.71, "Green"),
+                                ),
+                            ),
+                            Container(height=40),
+                            ft.Divider(height=20, color="Green500"),
+                            ft.Text("Votre application de conseil Santé", size=20, color='black'),
+                            ft.Divider(height=20, color="Green500"),
+
+                            Container(height=30),
+                            ft.ElevatedButton(text="Créer un compte", width=180, bgcolor="Green700", color="white", adaptive=
+                                              True),
+                            ft.ElevatedButton(text="Se Connecter", width=180, bgcolor="Green700", color="white", adaptive=True),
+                        ]
+                    )
                 ),
-                ft.Row(
-                    [
-                        bouton_se_connecter,
-                        bouton_creer_compte,
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                ),
-            ],
-            spacing=10,
-        ),
+            ]    
+        )        
     )
 
-def se_connecter(page, email, mot_de_passe):
-    if email and mot_de_passe:
-        # Rediriger vers la page d'accueil de l'application
-        from views.authentication.login import login_page
-        login_page(page, email, mot_de_passe)
-
-def creer_compte(page):
-    from views.authentication.signup import signup_page
-    signup_page(page) """
-
+    page_1 = Container()
+    page_2 = Row(
+    controls=[
+        Container(
+            width=400,
+            height=850,
+            bgcolor='white',
+            border_radius=35,
+            padding = padding.only(
+                top=50, left=20,
+                right=20,bottom=5
+            ),
+            content=Column(
+                controls=[
+                    first_page_contents
+                ]
+            )
+        )
+    ]
+)
+    container = Container(
+        width=400,
+        height=850,
+        bgcolor='white',
+        border_radius=35,
+        content=Stack(
+            controls=[
+                page_1,
+                page_2
+            ]
+        )
+    )
+    page.add(container)
