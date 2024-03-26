@@ -1,10 +1,26 @@
 import flet as ft
 from flet import *
-from views.home import home_page
-from views.authentication.login import login_page
+from fletrt import Router
+from views.home import HomeView
+from views.authentication.login import LoginView
+from views.authentication.signup import SignupView
+from views.historique import HistoriqueView
+from views.chat import ChatView
 
 def main(page: Page):
-    # home_page(page)
-    login_page(page)
+    
+    router = Router(
+        page=page,
+        routes={
+            '/': HomeView(),
+            '/login': LoginView(),
+            '/signup': SignupView(),
+            '/historique': HistoriqueView(),
+            '/chat': ChatView(),
+        },
+        redirect_not_found=False,
+    )
+
+    router.install()
 
 app(target=main)

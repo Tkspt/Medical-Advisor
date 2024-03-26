@@ -1,87 +1,166 @@
 import flet as ft
+from flet import *
+from fletrt import Route
 
-def signup_page(page: ft.Page):
-    # Définition des couleurs
-    blanc = ft.colors.WHITE
-    vert = ft.colors.GREEN
-    noir = ft.colors.BLACK
-    gris = ft.colors.BLUE_GREY
-    page.bgcolor="white"
+class SignupView(Route):
+    def body(self):        
+        first_page_contents = Container(
+            content=Column(
+                controls=[
+                    Row(alignment='spaceBetween',
+                        controls=[
+                            Container(
+                                content = IconButton(
+                                    icons.ARROW_BACK,
+                                    icon_color=ft.colors.GREEN_500,
+                                    on_click=lambda _: self.go("/")
+                                )
+                            ),
+                            Row(controls=[
+                                Icon(icons.NOTIFICATION_ADD_OUTLINED,color=ft.colors.GREEN_500)
+                            ]),
+                        ],
+                    ),
+                    Container(height=5),
 
-    # Création des champs de saisie
-    champ_nom = ft.TextField(label="Nom", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_prenom = ft.TextField(label="Prénom", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_email = ft.TextField(label="Email", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir))
-    champ_sexe = ft.Dropdown(label="Sexe", width=200, color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir),
-        options=[
-            ft.dropdown.Option("Homme"),
-            ft.dropdown.Option("Femme"),
-            ft.dropdown.Option("Autre"),
-        ],
-    )
-    champ_mot_de_passe = ft.TextField(label="Mot de passe", color=noir, border_color=gris, hint_style=ft.TextStyle(color=noir), password=True)
+                    ft.SafeArea(
+                        expand=True,
+                        content=ft.Column(
+                            horizontal_alignment="center",
+                            controls=[
+                                ft.Divider(height=20, color="transparent"),
+                                ft.Container(
+                                    bgcolor="white10",
+                                    width=100,
+                                    height=100,
+                                    shape=ft.BoxShape("circle"),
+                                    image_src="./logos/logo1.png",
+                                    image_fit="cover",
+                                    shadow=ft.BoxShadow(
+                                        spread_radius=6,
+                                        blur_radius=20,
+                                        color=ft.colors.with_opacity(0.71, "Green"),
+                                    ),
+                                ),
+                                Container(height=10),
+                                ft.Text("Inscrivez-vous", size=20, color='black', weight = FontWeight.BOLD),
+                                Container(height=10),
+                                ft.TextField(
+                                    label="Prénom",
+                                    width=300,
+                                    color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    height = 40,
+                                ),
+                                ft.TextField(
+                                    label="Nom",
+                                    width=300,
+                                    color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    height = 40,
+                                ),
+                                ft.TextField(
+                                    label="Email",
+                                    width=300,
+                                    color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    height = 40,
+                                ),
+                                ft.TextField(
+                                    label="Téléphone",
+                                    width=300,
+                                    color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    keyboard_type=ft.KeyboardType.PHONE,
+                                    height = 40,
+                                ),
+                                ft.TextField(
+                                    label="Date",
+                                    width=300,
+                                    color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    keyboard_type=ft.KeyboardType.DATETIME,
+                                    height = 40,
+                                ),
+                                ft.TextField(
+                                    label="Mot de Passe",
+                                    password=True,
+                                    can_reveal_password=True,
+                                    width=300, color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    height = 40,
+                                ),
+                                ft.TextField(
+                                    label="Confirmer le mot de Passe",
+                                    password=True,
+                                    can_reveal_password=True,
+                                    width=300, color='black',
+                                    border_color='Green500',
+                                    hint_style=ft.TextStyle(color='black'),
+                                    height = 40,
+                                ),
+                                Container(
+                                    ft.Checkbox(label = "J'accepte les CGU"),
+                                    padding = padding.only(left = 23),
+                                ),
+                                Container(height=5),
+                                ft.ElevatedButton(
+                                    text="Créer mon compte",
+                                    width=300,
+                                    bgcolor="Green700", 
+                                    height=40,
+                                    style=ButtonStyle(shape=RoundedRectangleBorder(radius=5)) ,
+                                    color="white", 
+                                    on_click=lambda _: login_page(page)
+                                ),
+                                
+                            ]
+                        )
+                    ),
+                ]    
+            )        
+        )
 
-    # Création des boutons
-    bouton_creer_compte = ft.ElevatedButton(text="Créer un compte", bgcolor=vert, color=noir, on_click=lambda _: creer_compte(page))
-    bouton_annuler = ft.ElevatedButton(text="Annuler", bgcolor=vert, color=noir, on_click=lambda _: annuler(page))
-
-    # Ajout des champs de saisie et des boutons à la page
-    page.add(
-        ft.Column([
-                ft.Row(
-                    [
-                        ft.Text("Nom", color=noir),
-                        champ_nom,
-                    ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                ),
-                ft.Row(
-                    [
-                        ft.Text("Prénom", color=noir),
-                        champ_prenom,
-                    ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                ),
-                ft.Row(
-                    [
-                        ft.Text("Email", color=noir),
-                        champ_email,
-                    ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                ),
-                ft.Row(
-                    [
-                        ft.Text("Sexe", color=noir),
-                        champ_sexe,
-                    ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                ),
-                ft.Row(
-                    [
-                        ft.Text("Mot de passe", color=noir),
-                        champ_mot_de_passe,
-                    ],
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                ),
-                ft.Row(
-                    [
-                        bouton_creer_compte,
-                        bouton_annuler,
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                ),
-            ],
-            spacing=10,
-        ),
-    )
-
-def creer_compte(page):
-    # Traiter les données saisies et créer le compte utilisateur
-    # Rediriger vers la page d'accueil de l'application
-    from views.home import home_page
-    home_page(page)
-
-def annuler(page):
-    # Rediriger vers la page d'accueil de l'application
-   from views.home import home_page
-   home_page(page)
+        page_1 = Container()
+        page_2 = Row(
+            controls=[
+                Container(
+                    width=400,
+                    height=850,
+                    bgcolor='white',
+                    border_radius=35,
+                    padding = padding.only(
+                        top=30, left=20,
+                        right=20,bottom=5
+                    ),
+                    content=Column(
+                        controls=[
+                            first_page_contents
+                        ]
+                    ),
+                    
+                )
+            ]
+        )
+        container = Container(
+            width=400,
+            bgcolor='white',
+            border_radius=35,
+            content=Stack(
+                controls=[
+                    page_1,
+                    page_2
+                ]
+            )
+        )
+        return container
+    
+    def view(self) -> View:
+        view = super().view()
+        return view
