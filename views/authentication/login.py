@@ -1,9 +1,39 @@
 import flet as ft
 from flet import *
 from fletrt import Route
+from db import users, conectedUser
+from entities.user import User
 
 class LoginView(Route):
     def body(self):
+        global email, password
+        def se_connecter():
+            result = [us for us in users if (us.email == email.value and us.password == password.value)]
+            if len(result) > 0:
+                conectedUser.append(result[0])
+                self.go("/historique")
+            else:
+                return None
+    
+        email = ft.TextField(
+            label="Email",
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 45,
+        )
+        password = ft.TextField(
+            label="Mot de Passe",
+            password=True,
+            can_reveal_password=True,
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 45,
+        )
+        
         first_page_contents = Container(
             content=Column(
                 controls=[
@@ -44,24 +74,8 @@ class LoginView(Route):
                                 Container(height=10),
                                 ft.Text("Connectez-vous", size=20, color='black', weight = FontWeight.BOLD),
                                 Container(height=10),
-                                ft.TextField(
-                                    label="Email",
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 45,
-                                ),
-                                ft.TextField(
-                                    label="Mot de Passe",
-                                    password=True,
-                                    can_reveal_password=True,
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 45,
-                                ),
+                                email,
+                                password,
                                 Container(height=10),
                                 ft.ElevatedButton(
                                     text="Se Connecter", 
@@ -69,7 +83,7 @@ class LoginView(Route):
                                     height=45,
                                     style=ButtonStyle(shape=RoundedRectangleBorder(radius=5)) ,
                                     color="white", 
-                                    on_click=lambda _: self.go("/historique")
+                                    on_click=lambda _: se_connecter()
                                 ),
                                 
                             ]

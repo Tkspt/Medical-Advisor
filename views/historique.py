@@ -1,9 +1,14 @@
 import flet as ft
 from flet import *
 from fletrt import Route
+from db import conectedUser
 
 class HistoriqueView(Route):
     def body(self):
+        def se_deconnecter():            
+            conectedUser.remove(conectedUser[0])
+            self.go("/")
+            
         first_page_contents = Container(
             content=Column(
                 controls=[
@@ -11,8 +16,12 @@ class HistoriqueView(Route):
                         controls=[
                             Container(content=Icon(icons.MENU, color=ft.colors.GREEN_500)),
                             Row(controls=[
-                                Icon(icons.SEARCH, color=ft.colors.GREEN_500),
-                                Icon(icons.NOTIFICATION_ADD_OUTLINED,color=ft.colors.GREEN_500)
+                                Text(conectedUser[0].first_name),
+                                IconButton(
+                                    icons.LOGOUT,
+                                    icon_color=ft.colors.RED,
+                                    on_click=lambda _: se_deconnecter(),
+                                )
                             ]),
                         ],
                     ),

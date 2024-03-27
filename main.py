@@ -6,8 +6,10 @@ from views.authentication.login import LoginView
 from views.authentication.signup import SignupView
 from views.historique import HistoriqueView
 from views.chat import ChatView
+# from db import creer_base_de_donnees
 
 def main(page: Page):
+    # creer_base_de_donnees()
     
     router = Router(
         page=page,

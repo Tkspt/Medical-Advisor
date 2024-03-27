@@ -1,9 +1,93 @@
 import flet as ft
 from flet import *
 from fletrt import Route
+from utils.validation import Validation
+from db import users
+from entities.user import User
 
-class SignupView(Route):
-    def body(self):        
+class SignupView(Route):                
+    def body(self):
+        global first_name, last_name, email, phone, birth_date, password, password_confirm, cgu
+        
+        def s_inscrire():
+            user = User(
+                len(users) + 1,
+                first_name.value,
+                last_name.value,
+                email.value,
+                phone.value,
+                password.value,
+                birth_date.value
+            )
+            users.append(user)
+            
+            self.go("/login")
+        
+        first_name = ft.TextField(
+            label="Prénom",
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 40,
+        )
+        last_name = ft.TextField(
+            label="Nom",
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 40,
+        )
+        email = ft.TextField(
+            label="Email",
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 40,
+        )
+        phone = ft.TextField(
+            label="Téléphone",
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            keyboard_type=ft.KeyboardType.PHONE,
+            height = 40,
+        )
+        birth_date = ft.TextField(
+            label="Age",
+            width=300,
+            color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            keyboard_type=ft.KeyboardType.NUMBER,
+            height = 40,
+        )
+        password = ft.TextField(
+            label="Mot de Passe",
+            password=True,
+            can_reveal_password=True,
+            width=300, color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 40,
+        )
+        password_confirm = ft.TextField(
+            label="Confirmer le mot de Passe",
+            password=True,
+            can_reveal_password=True,
+            width=300, color='black',
+            border_color='Green500',
+            hint_style=ft.TextStyle(color='black'),
+            height = 40,
+        )
+        cgu = Container(
+            ft.Checkbox(label = "J'accepte les CGU"),
+            padding = padding.only(left = 23),
+        )
+        
         first_page_contents = Container(
             content=Column(
                 controls=[
@@ -45,70 +129,14 @@ class SignupView(Route):
                                 Container(height=10),
                                 ft.Text("Inscrivez-vous", size=20, color='black', weight = FontWeight.BOLD),
                                 Container(height=10),
-                                ft.TextField(
-                                    label="Prénom",
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 40,
-                                ),
-                                ft.TextField(
-                                    label="Nom",
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 40,
-                                ),
-                                ft.TextField(
-                                    label="Email",
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 40,
-                                ),
-                                ft.TextField(
-                                    label="Téléphone",
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    keyboard_type=ft.KeyboardType.PHONE,
-                                    height = 40,
-                                ),
-                                ft.TextField(
-                                    label="Date",
-                                    width=300,
-                                    color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    keyboard_type=ft.KeyboardType.DATETIME,
-                                    height = 40,
-                                ),
-                                ft.TextField(
-                                    label="Mot de Passe",
-                                    password=True,
-                                    can_reveal_password=True,
-                                    width=300, color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 40,
-                                ),
-                                ft.TextField(
-                                    label="Confirmer le mot de Passe",
-                                    password=True,
-                                    can_reveal_password=True,
-                                    width=300, color='black',
-                                    border_color='Green500',
-                                    hint_style=ft.TextStyle(color='black'),
-                                    height = 40,
-                                ),
-                                Container(
-                                    ft.Checkbox(label = "J'accepte les CGU"),
-                                    padding = padding.only(left = 23),
-                                ),
+                                first_name,
+                                last_name,
+                                email,
+                                phone,
+                                birth_date,
+                                password,
+                                password_confirm,
+                                cgu,
                                 Container(height=5),
                                 ft.ElevatedButton(
                                     text="Créer mon compte",
@@ -117,15 +145,16 @@ class SignupView(Route):
                                     height=40,
                                     style=ButtonStyle(shape=RoundedRectangleBorder(radius=5)) ,
                                     color="white", 
-                                    on_click=lambda _: login_page(page)
+                                    on_click=lambda _: s_inscrire()
                                 ),
                                 
                             ]
                         )
                     ),
                 ]    
-            )        
+            )
         )
+        first_page_contents
 
         page_1 = Container()
         page_2 = Row(

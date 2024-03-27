@@ -13,7 +13,7 @@ from keras.preprocessing.text import tokenizer_from_json
 # Désactiver TF_ENABLE_ONEDNN_OPTS si nécessaire
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-def load_data(fichier = "C:/Users/The Tech Alchemist/Downloads/Liste_maladies.xlsx"):
+def load_data(fichier = "assets\docs\Liste_maladies.xlsx"):
     data = pd.read_excel(fichier)
 
     # Convertir les colonnes de pathologie en chaînes de caractères
@@ -64,12 +64,14 @@ def predire_maladie(pathologies):
     nom_remede = data.loc[index_prediction, "Remede"]
     nom_medicament = data.loc[index_prediction, "Medicament"]
     nom_effet_secondaire = data.loc[index_prediction, "Effet_Secondaire_Medicament"]
+    
+    return f"${nom_maladie} de la famille ${nom_famille}. On vous recomande le remède ${nom_remede} ainsi que le médicament ${nom_medicament}. les potentiels effets secondaire sont ${nom_effet_secondaire}"
 
-    print(nom_maladie)
-    print(nom_famille)
-    print(nom_remede)
-    print(nom_medicament)
-    print(nom_effet_secondaire)
+    # print(nom_maladie)
+    # print(nom_famille)
+    # print(nom_remede)
+    # print(nom_medicament)
+    # print(nom_effet_secondaire)
 
 # Fonction principale pour créer l'interface Flet
 # def main(page: ft.Page):
