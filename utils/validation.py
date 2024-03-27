@@ -15,14 +15,14 @@ class Validation():
         if not any(c.isdigit() for c in password):
             return False
         
-        if not re.search("[@_!#$%^&*()<>?/\|}{:]", password):
-            return False
+        # if not re.search("[@_!#$%^&*()<>?/\|}{:]", password):
+        #     return False
         
         return True
     
 
     def is_valid_first_name(self, first_name):
-        if(len(first_name) <= 3):
+        if(len(first_name) < 3):
             return False
         
         return True

@@ -8,12 +8,33 @@ class LoginView(Route):
     def body(self):
         global email, password
         def se_connecter():
-            result = [us for us in users if (us.email == email.value and us.password == password.value)]
-            if len(result) > 0:
-                conectedUser.append(result[0])
-                self.go("/historique")
+            error_message = None
+            if not email.value:
+                error_message = "Veuillez renseigner votre email"
+            elif not password.value:
+                error_message = "Veuillez saisir votre mot de passe"
+            
+            if(error_message != None):
+                self.page.snack_bar = ft.SnackBar(
+                    content=ft.Text(error_message),
+                    bgcolor = colors.RED_400,
+                    action="OK",
+                )
+                self.page.snack_bar.open = True
+                self.page.update()
             else:
-                return None
+                result = [us for us in users if (us.email == email.value and us.password == password.value)]
+                if len(result) > 0:
+                    conectedUser.append(result[0])
+                    self.go("/historique")
+                else:
+                    self.page.snack_bar = ft.SnackBar(
+                        content=ft.Text("Email ou mot de passe invalide"),
+                        bgcolor = colors.RED_400,
+                        action="OK",
+                    )
+                    self.page.snack_bar.open = True
+                    self.page.update()
     
         email = ft.TextField(
             label="Email",

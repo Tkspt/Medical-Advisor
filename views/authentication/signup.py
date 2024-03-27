@@ -7,21 +7,59 @@ from entities.user import User
 
 class SignupView(Route):                
     def body(self):
-        global first_name, last_name, email, phone, birth_date, password, password_confirm, cgu
+        global first_name, last_name, email, phone, password, password_confirm, cgu
         
         def s_inscrire():
-            user = User(
-                len(users) + 1,
-                first_name.value,
-                last_name.value,
-                email.value,
-                phone.value,
-                password.value,
-                birth_date.value
-            )
-            users.append(user)
+            validator = Validation()
+            error_message = None
+            if not validator.is_valid_first_name(first_name.value):
+                error_message = "Le prénom doit être au moins trois caractères"
+                
+            elif not validator.is_valid_last_name(last_name.value):
+                error_message = "Le nom doit être au moins deux caractères"
+                
+            elif not email.value:
+                error_message = "L'email est obligatoire"
+                
+            elif not phone.value:
+                error_message = "Le numéro de téléphone est obligatoire"
+                
+            elif not validator.is_valid_password(password.value):
+                error_message = "Le mot de passe doit être au moins 8 caractères et doit contenir au moins un chiffre"
+                
+            elif password_confirm.value != password.value:
+                error_message = "Les deux mots de passe doivent être les mêmes"
+                
+            elif not cgu.value:
+                error_message = "Veuillez accepter les conditions générales d'utilisation"
+                
+            foundUser = [us for us in users if us.email == email.value]
+            if len(foundUser) > 0:
+                error_message = "Cet email est dèjà utilisé"
+                
+            if(error_message != None):
+                self.page.snack_bar = ft.SnackBar(
+                    content=ft.Text(error_message),
+                    bgcolor = colors.RED_400,
+                    action="OK",
+                )
+                self.page.snack_bar.open = True
+                self.page.update()
+            else:
+                user = User(
+                    len(users) + 1,
+                    first_name.value,
+                    last_name.value,
+                    email.value,
+                    phone.value,
+                    password.value,
+                    30
+                )
+                users.append(user)
+                
+                self.go("/login")
             
-            self.go("/login")
+            self.page.update()
         
         first_name = ft.TextField(
             label="Prénom",
@@ -56,15 +94,6 @@ class SignupView(Route):
             keyboard_type=ft.KeyboardType.PHONE,
             height = 40,
         )
-        birth_date = ft.TextField(
-            label="Age",
-            width=300,
-            color='black',
-            border_color='Green500',
-            hint_style=ft.TextStyle(color='black'),
-            keyboard_type=ft.KeyboardType.NUMBER,
-            height = 40,
-        )
         password = ft.TextField(
             label="Mot de Passe",
             password=True,
@@ -83,10 +112,7 @@ class SignupView(Route):
             hint_style=ft.TextStyle(color='black'),
             height = 40,
         )
-        cgu = Container(
-            ft.Checkbox(label = "J'accepte les CGU"),
-            padding = padding.only(left = 23),
-        )
+        cgu = ft.Checkbox(label = "J'accepte les CGU")
         
         first_page_contents = Container(
             content=Column(
@@ -105,14 +131,14 @@ class SignupView(Route):
                             ]),
                         ],
                     ),
-                    Container(height=5),
 
                     ft.SafeArea(
                         expand=True,
                         content=ft.Column(
+                            expand = True,
+                            alignment = MainAxisAlignment.SPACE_BETWEEN,
                             horizontal_alignment="center",
                             controls=[
-                                ft.Divider(height=20, color="transparent"),
                                 ft.Container(
                                     bgcolor="white10",
                                     width=100,
@@ -126,17 +152,18 @@ class SignupView(Route):
                                         color=ft.colors.with_opacity(0.71, "Green"),
                                     ),
                                 ),
-                                Container(height=10),
                                 ft.Text("Inscrivez-vous", size=20, color='black', weight = FontWeight.BOLD),
                                 Container(height=10),
                                 first_name,
                                 last_name,
                                 email,
                                 phone,
-                                birth_date,
                                 password,
                                 password_confirm,
-                                cgu,
+                                Container(
+                                    cgu,
+                                    padding = padding.only(left = 45),
+                                ),
                                 Container(height=5),
                                 ft.ElevatedButton(
                                     text="Créer mon compte",
@@ -156,37 +183,11 @@ class SignupView(Route):
         )
         first_page_contents
 
-        page_1 = Container()
-        page_2 = Row(
-            controls=[
-                Container(
-                    width=400,
-                    height=850,
-                    bgcolor='white',
-                    border_radius=35,
-                    padding = padding.only(
-                        top=30, left=20,
-                        right=20,bottom=5
-                    ),
-                    content=Column(
-                        controls=[
-                            first_page_contents
-                        ]
-                    ),
-                    
-                )
-            ]
-        )
         container = Container(
-            width=400,
-            bgcolor='white',
-            border_radius=35,
-            content=Stack(
-                controls=[
-                    page_1,
-                    page_2
-                ]
-            )
+            expand = True,
+            width = 400,
+            bgcolor = 'white',
+            content = first_page_contents
         )
         return container
     

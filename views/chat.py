@@ -11,40 +11,87 @@ from entities.chat import Chat
 
 class ChatView(Route):
     def body(self):
-        global question
+        global question, list_of_chats
+        
+        list_of_chats = Column(scroll="always", alignment = MainAxisAlignment.START)
         
         def getTodaysChat():
+            list_of_chats.controls = []
             today = date.today()
+            msgs = []
+            
             result = [ct for ct in chats if (ct.date == today and ct.userId == conectedUser[0].id)]
             if len(result) > 0:
                 chat = result[0]
                 msgs = [msg for msg in messages if (msg.chatId == chat.id)]
-                return msgs
-            else:
-                return []
+                
+            for msg in msgs:
+                item = Row()
+                if not msg.isGenerated:
+                    item.alignment = MainAxisAlignment.START,
+                    item.vertical_alignment = CrossAxisAlignment.START,
+                    item.controls = [
+                        Container(
+                            height = 30,
+                            width = 30,
+                            shape = BoxShape.CIRCLE,
+                            bgcolor = colors.GREEN_500,
+                            content = Icon(icons.PERSON, color=ft.colors.WHITE)
+                        ),
+                        Container(
+                            expand = True,
+                            content = Text(
+                                msg.label,
+                                text_align = TextAlign.JUSTIFY,
+                            )
+                        )
+                    ]
+                else:
+                    item.alignment = MainAxisAlignment.END,
+                    item.controls = [
+                        Container(
+                            expand = True,
+                            bgcolor = colors.GREY_200,
+                            padding = padding.symmetric(vertical = 10, horizontal = 5),
+                            content = Text(
+                                msg.label,
+                                text_align = TextAlign.RIGHT
+                            ),
+                            border_radius = 5,
+                        )
+                    ]
+                print(item)
+                list_of_chats.controls.append(item)
+                self.page.update()
         
         def make_prediction():
-            today = date.today()
-            result = [ct for ct in chats if (ct.date == today)]
-            chat = None
-            
-            if len(result) > 0:
-                chat = result[0]
-                new_msg = Message(len(messages) + 1, question.value, chat.id, today)
-                messages.append(new_msg)
-                # self.go("/historique")
+            if(not question.value):
+                pass
             else:
-                chat = Chat(len(chats) + 1, question.value, conectedUser[0].id, today)
-                chats.append(chat)
+                today = date.today()
+                result = [ct for ct in chats if (ct.date == today and ct.userId == conectedUser[0].id)]
+                chat = None
                 
-                new_msg = Message(len(messages) + 1, question.value, chat.id, today)
+                if len(result) > 0:
+                    chat = result[0]
+                    new_msg = Message(len(messages) + 1, question.value, chat.id, today)
+                    messages.append(new_msg)
+                else:
+                    chat = Chat(len(chats) + 1, question.value, conectedUser[0].id, today)
+                    chats.append(chat)
+                    
+                    new_msg = Message(len(messages) + 1, question.value, chat.id, today)
+                    messages.append(new_msg)
+                    
+                predicted_result = predire_maladie(question.value)
+                new_msg = Message(len(messages) + 1, predicted_result, chat.id, today, isGenerated = True)
                 messages.append(new_msg)
+                getTodaysChat()
                 
-            predicted_result = predire_maladie(question.value)
-            new_msg = Message(len(messages) + 1, predicted_result, chat.id, today)
-            messages.append(new_msg)
-            
-            [print(msg.label) for msg in messages]
+                [print(msg.label) for msg in messages]
+        
+        
+        getTodaysChat()
         
         question = ft.TextField(
             expand = True,
@@ -54,8 +101,6 @@ class ChatView(Route):
             hint_style=ft.TextStyle(color='black'),
             height = 40,
         )
-        
-        userChat = getTodaysChat()
         
         first_page_contents = Container(
             content=Column(
@@ -84,46 +129,7 @@ class ChatView(Route):
                                 Container(
                                     expand = True,
                                     margin = margin.symmetric(vertical = 10),
-                                    content = Column(
-                                        alignment = MainAxisAlignment.START,
-                                        controls = [
-                                            Row(
-                                                alignment = MainAxisAlignment.START,
-                                                vertical_alignment = CrossAxisAlignment.START,
-                                                controls = [
-                                                    Container(
-                                                        height = 30,
-                                                        width = 30,
-                                                        shape = BoxShape.CIRCLE,
-                                                        bgcolor = colors.GREEN_500,
-                                                        content = Icon(icons.PERSON, color=ft.colors.WHITE)
-                                                    ),
-                                                    Container(
-                                                        expand = True,
-                                                        content = Text(
-                                                            "Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question Ceci est ma première question ",
-                                                            text_align = TextAlign.JUSTIFY,
-                                                        )
-                                                    )
-                                                ]
-                                            ),
-                                            Row(
-                                                alignment = MainAxisAlignment.END,
-                                                controls = [
-                                                    Container(
-                                                        expand = True,
-                                                        bgcolor = colors.GREY_200,
-                                                        padding = padding.symmetric(vertical = 10, horizontal = 5),
-                                                        content = Text(
-                                                            "Yeup !! et voici ta réponse Yeup !! et voici ta réponse Yeup !! et voici ta réponse Yeup !! et voici ta réponse Yeup !! et voici ta réponse Yeup !! et voici ta réponse Yeup !! et voici ta réponse",
-                                                            text_align = TextAlign.RIGHT
-                                                        ),
-                                                        border_radius = 5,
-                                                    )
-                                                ]
-                                            ),
-                                        ]
-                                    )
+                                    content = list_of_chats,
                                 ),
                                 Container(
                                     content = Row(

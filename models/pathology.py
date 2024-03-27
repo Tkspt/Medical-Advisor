@@ -65,7 +65,7 @@ def predire_maladie(pathologies):
     nom_medicament = data.loc[index_prediction, "Medicament"]
     nom_effet_secondaire = data.loc[index_prediction, "Effet_Secondaire_Medicament"]
     
-    return f"${nom_maladie} de la famille ${nom_famille}. On vous recomande le remède ${nom_remede} ainsi que le médicament ${nom_medicament}. les potentiels effets secondaire sont ${nom_effet_secondaire}"
+    return f"$Votre maladie est susceptible d'être {nom_maladie} de la famille ${nom_famille}. On vous recomande le remède ${nom_remede} ainsi que le médicament ${nom_medicament}. les potentiels effets secondaire sont ${nom_effet_secondaire}"
 
     # print(nom_maladie)
     # print(nom_famille)
