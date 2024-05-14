@@ -1,1 +1,4 @@
-"Ceci est mon commit modifié"
+"
+ - Ceci est mon commit modifié
+ - nouvelle ligne
+"
